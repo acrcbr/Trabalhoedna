@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VICE LINGO</title>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0F0E17;--card:#1B1930;--line:#2f2b57;--pink:#FF2A85;--orange:#FF8E3C;--cyan:#00F0FF;--ok:#39FF88;--bad:#FF3B4E;--ink:#F6F1FF;--mute:#9a95c4;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:radial-gradient(circle at 20% 0,#FF2A8533,transparent 45%),radial-gradient(circle at 90% 100%,#00F0FF26,transparent 45%),#07060d;color:var(--ink);font-family:'Nunito',system-ui,sans-serif;font-weight:600;display:flex;align-items:center;justify-content:center}
+button{font:inherit;color:inherit;cursor:pointer}
+.phone{width:min(430px,100%);height:min(840px,100%);background:var(--bg);border:2px solid var(--line);border-radius:34px;box-shadow:0 0 60px #FF2A8530,0 0 120px #00F0FF18;display:flex;flex-direction:column;overflow:hidden;position:relative}
+@media(max-width:480px){.phone{border-radius:0;border:0}}
+#app{flex:1;display:flex;flex-direction:column;min-height:0}
+.disp{font-family:'Bungee',Impact,sans-serif;letter-spacing:.02em}
+.grad{background:linear-gradient(90deg,var(--pink),var(--orange) 55%,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* top */
+.top{padding:12px 16px 8px;border-bottom:1px solid var(--line)}
+.prog{height:12px;background:#24213f;border-radius:9px;overflow:hidden}
+.prog i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--pink),var(--orange),var(--cyan));transition:width .5s}
+.hud{display:flex;justify-content:space-between;align-items:center;margin-top:9px;gap:8px;font-weight:900;font-size:14px}
+.stars{display:flex;gap:2px;font-size:20px}
+.stars b{color:#3a3760;font-weight:400;transition:color .2s}
+.stars b.on{color:var(--bad);text-shadow:0 0 10px var(--bad);animation:blink .8s infinite alternate}
+.zone{font-size:13px;text-align:center}
+.fol{color:var(--cyan);text-shadow:0 0 10px #00F0FF66;white-space:nowrap}
+.viral{margin-top:8px;text-align:center;font-family:'Bungee',sans-serif;font-size:13px;color:#0F0E17;background:linear-gradient(90deg,var(--orange),var(--pink));border-radius:20px;padding:4px;animation:pop .5s}
+
+/* stage */
+.stage{flex:1;overflow-y:auto;padding:12px 16px}
+.jaxrow{display:flex;align-items:flex-end;gap:8px;margin-bottom:12px}
+.jax{width:76px;flex:none;overflow:visible}
+.bubble{position:relative;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:9px 12px;font-size:14px;line-height:1.35;animation:pop .35s}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:16px;border:7px solid transparent;border-right-color:var(--line);border-left:0}
+.qtype{font-weight:900;font-size:19px;margin:6px 0 12px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;line-height:1.5}
+.ctx{color:var(--cyan);font-weight:800;text-align:center}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:2px solid var(--line);border-bottom-width:5px;border-radius:14px;padding:13px 14px;margin-bottom:10px;font-size:15px;transition:transform .1s,border-color .15s}
+.opt:hover:not(:disabled){border-color:var(--cyan)}
+.opt.sel{border-color:var(--cyan);background:#00F0FF14;box-shadow:0 0 14px #00F0FF40}
+.opt.ok{border-color:var(--ok);background:#39FF8820;box-shadow:0 0 16px #39FF8860}
+.opt.bad{border-color:var(--bad);background:#FF3B4E22}
+.post .who{display:flex;align-items:center;gap:8px;font-weight:900;margin-bottom:8px;font-size:14px}
+.av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--orange))}
+.post p{margin:0;font-size:17px;line-height:2}
+.post input{font:inherit;font-weight:900;width:9.5em;max-width:100%;background:#0F0E17;color:var(--ink);border:0;border-bottom:3px solid var(--cyan);border-radius:6px 6px 0 0;padding:2px 8px;text-align:center;outline:0}
+.post input:focus-visible{box-shadow:0 0 12px #00F0FF66}
+.post input.ok{border-color:var(--ok);color:var(--ok)}
+.post input.bad{border-color:var(--bad);color:var(--bad)}
+.pt{color:var(--mute);font-size:14px;margin:0 0 10px}
+.slots{min-height:104px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;padding:10px 4px;background:repeating-linear-gradient(transparent 0 46px,var(--line) 46px 48px);border-radius:8px;margin-bottom:14px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tok{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;padding:8px 12px;font-weight:800;font-size:15px}
+.tok:hover:not(:disabled){border-color:var(--cyan)}
+.tok.ghost{background:transparent;border-style:dashed;color:transparent;border-color:#2a2750}
+.slots .tok{background:#2a2650}
+.slots.ok .tok{border-color:var(--ok)}
+.slots.bad .tok{border-color:var(--bad)}
+
+/* bottom bar */
+.bar{padding:12px 16px 16px;border-top:1px solid var(--line);background:#12101d}
+.bar.ok{background:#0f2a1c;border-color:var(--ok)}
+.bar.bad{background:#2c0f18;border-color:var(--bad)}
+.fb{font-size:14px;line-height:1.45;margin-bottom:10px}
+.fb h4{margin:0 0 4px;font-family:'Bungee',sans-serif;font-size:17px;font-weight:400}
+.bar.ok h4{color:var(--ok)}.bar.bad h4{color:var(--bad)}
+.btn{width:100%;border:0;border-bottom:5px solid #a3125a;border-radius:16px;padding:14px;font-family:'Bungee',sans-serif;font-size:17px;color:#fff;background:linear-gradient(90deg,var(--pink),var(--orange));text-shadow:0 1px 0 #0003}
+.btn:active:not(:disabled){transform:translateY(3px);border-bottom-width:2px}
+.btn:disabled{background:#2a2750;border-bottom-color:#1d1a38;color:#6c67a0;cursor:not-allowed}
+.btn.cy{background:linear-gradient(90deg,var(--cyan),#3d8bff);border-bottom-color:#0a6a9a;color:#07202b;text-shadow:none}
+.btn:focus-visible,.opt:focus-visible,.tok:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+
+/* screens */
+.center{flex:1;overflow-y:auto;padding:22px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.sun{position:absolute;top:-70px;left:50%;width:360px;height:360px;margin-left:-180px;border-radius:50%;background:linear-gradient(#FF8E3C,#FF2A85 60%,#7a1d7a);opacity:.5;filter:blur(2px);z-index:0}
+.center>*{position:relative;z-index:1}
+.logo{font-size:52px;line-height:.95;margin:6px 0 0;filter:drop-shadow(0 0 18px #FF2A8599)}
+.tag{color:var(--mute);margin:0;max-width:28ch;line-height:1.4}
+.map{display:flex;gap:6px;width:100%}
+.map div{flex:1;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:8px 4px;font-size:12px;font-weight:900}
+.map span{display:block;font-size:22px}
+.big{font-size:44px;margin:0}
+.stats{display:flex;gap:10px;width:100%}
+.stats div{flex:1;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px 4px}
+.stats b{display:block;font-family:'Bungee',sans-serif;font-size:22px;font-weight:400}
+.stats small{color:var(--mute);font-size:12px}
+.rules{text-align:left;width:100%;font-size:14px;line-height:1.5}
+.rules p{margin:0 0 7px;background:var(--card);border-left:4px solid var(--pink);border-radius:8px;padding:8px 10px}
+.rules p:nth-child(2){border-color:var(--orange)}.rules p:nth-child(3){border-color:var(--cyan)}.rules p:nth-child(4){border-color:var(--ok)}
+.rules em{color:var(--cyan);font-style:normal;font-weight:900}
+.siren{position:absolute;inset:0;z-index:0;pointer-events:none;animation:siren .6s infinite alternate}
+
+/* fx */
+.shake{animation:shake .4s}
+.flashG::after,.flashR::after{content:"";position:absolute;inset:0;pointer-events:none;animation:flash .6s forwards;z-index:5}
+.flashG::after{background:radial-gradient(circle,transparent 40%,#39FF8855)}
+.flashR::after{background:radial-gradient(circle,transparent 40%,#FF3B4E77)}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes flash{from{opacity:1}to{opacity:0}}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes blink{to{opacity:.55}}
+@keyframes siren{from{background:radial-gradient(circle at 0 0,#FF3B4E55,transparent 60%)}to{background:radial-gradient(circle at 100% 0,#2a6bff66,transparent 60%)}}
+@media(min-width:900px){
+.phone{width:min(1120px,96vw);height:min(780px,95vh);border-radius:26px}
+.top{padding:16px 40px 10px}.hud{font-size:17px}.stars{font-size:26px}.prog{height:14px}
+.stage{padding:24px 48px;display:grid;grid-template-columns:260px 1fr;gap:0 44px;align-content:start}
+.jaxrow{grid-row:1/4;flex-direction:column;align-items:center;text-align:center}
+.jax{width:190px}
+.bubble::before{left:50%;bottom:auto;top:-9px;margin-left:-7px;border:7px solid transparent;border-top:0;border-bottom-color:var(--line)}
+.qtype{font-size:24px;margin-top:0}.card{font-size:18px}.opt{font-size:18px;padding:16px 18px}.post p{font-size:21px}.tok{font-size:18px;padding:10px 16px}.pt{font-size:16px}
+.bar{padding:14px 40px 18px}.bar>*{max-width:760px;margin-inline:auto}
+.center>*{max-width:640px;width:100%}.logo{font-size:84px}.big{font-size:64px}
+.hint{display:block;color:var(--mute);font-size:12px;margin-top:6px;text-align:center;font-weight:600}
+}
+@media(max-width:899px){.hint{display:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="phone" id="phone"><div id="app"></div></div>
+
+<script>
+/* ---------- DADOS ---------- */
+const ZN=[{n:"Vice Beach",e:"🌴",c:"var(--pink)"},{n:"Grassrivers",e:"🐊",c:"var(--orange)"},{n:"Downtown Hustle",e:"💎",c:"var(--cyan)"}];
+const Q=[
+{z:0,t:"mc",ctx:"🏎️ Turbo X: 240 km/h  |  Cheetah GT: 200 km/h",p:"Jax precisa fugir da praia. Qual frase está correta?",o:["The Turbo X is more fast than the Cheetah GT.","The Turbo X is faster than the Cheetah GT.","The Turbo X is the fastest than the Cheetah GT."],a:1,why:"“Fast” é curto: fast + er = faster, seguido de “than”. Nada de “more fast”!"},
+{z:0,t:"fill",u:"@neon_nick",x:"Yacht party tonight! It is __ (crazy) than last night 🌴🍹",a:["crazier"],why:"Consoante + y: troque o y por i e some -er. crazy → crazier."},
+{z:0,t:"build",pt:"Esta é a praia mais lotada de Vice City.",w:["This","is","the","most","crowded","beach","in","Vice","City","more","crowdest"],a:"This is the most crowded beach in Vice City",why:"“Crowded” é mais longo: the most + adjetivo forma o superlativo, e depois usamos “in” + lugar."},
+{z:0,t:"mc",ctx:"🚗 Sunset Cruiser $90k  |  Wave Rider $60k  |  Palm Coupe $40k",p:"Jax quer o carro mais barato. Qual frase está certa?",o:["The Palm Coupe is the most cheap car.","The Palm Coupe is cheaper car.","The Palm Coupe is the cheapest car."],a:2,why:"Entre três ou mais usamos o superlativo: the + cheap + est = the cheapest. “Cheap” é curto, nada de “most cheap”."},
+{z:1,t:"fill",u:"@gator_news_24h",x:"BREAKING: Gator Greg is __ (big) than any gator in the swamp! 🐊",a:["bigger"],why:"Consoante-vogal-consoante no fim: dobre a última letra. big → bigger."},
+{z:1,t:"build",pt:"Este pântano é mais perigoso que a cidade.",w:["This","swamp","is","more","dangerous","than","the","city","most","dangerouser"],a:"This swamp is more dangerous than the city",why:"“Dangerous” é longo: more + adjetivo + than. Nunca “dangerouser”."},
+{z:1,t:"fill",u:"@florida_man_420",x:"Gator burgers are __ (expensive) than regular burgers! 🍔",a:["more expensive"],why:"“Expensive” é longo, então: more expensive. Nada de “expensiver”."},
+{z:2,t:"mc",ctx:"💥 Driver: crashed 2 times  |  Rookie: crashed 1 time",p:"Quem é pior no volante? Escolha a frase certa.",o:["The driver is worse than the rookie.","The driver is badder than the rookie.","The driver is more bad than the rookie."],a:0,why:"“Bad” é irregular: bad → worse → worst. “Badder” não existe!"},
+{z:2,t:"build",pt:"Ele é o membro mais inteligente da gangue.",w:["He","is","the","most","intelligent","member","of","the","gang","more","intelligenter"],a:"He is the most intelligent member of the gang",why:"“Intelligent” é longo: the most + adjetivo é o superlativo, e depois “of” + grupo."},
+{z:2,t:"fill",u:"@vice_city_news",x:"That was the __ (good) heist in Leonida history! 💎",a:["best"],why:"“Good” é irregular: good → better → best. Superlativo leva “the”: the best."}
+];
+const SAY={
+start:["E aí, futuro influencer! Bora ficar famoso falando inglês?"],
+hit:["Isso aí, parceiro! Tá viral!","Mandou bem! +Followers na conta!","Brabo! Nem a polícia te pega.","Perfeito! Inglês nível Vice City."],
+streak:["VIRAL STREAK! O algoritmo te ama!","Sequência insana! Multiplicador ligado!"],
+miss:["Eita! A polícia viu isso…","Opa! Escorregou na casca de banana.","Ixi, o rádio da polícia tocou!","Calma, até o jacaré erra."],
+zone:["Vice Beach: sol, carro e confusão!","Grassrivers: cuidado com os jacarés!","Downtown Hustle: o plano é perfeito, o inglês também!"]
+};
+/* ---------- VERSÃO PC: perguntas mais fáceis e bobas ---------- */
+Q.splice(0,Q.length,
+{z:0,t:"mc",ctx:"🐢 Turtle: 1 km/h  |  🐇 Rabbit: 20 km/h",p:"A tartaruga tentou fugir da polícia… Qual frase está certa?",o:["The turtle is slower than the rabbit.","The turtle is more slow than the rabbit.","The turtle is slowest than the rabbit."],a:0,why:"“Slow” é curto: slow + er = slower, e depois “than”. Tartaruga não corre, mas a gramática sim!"},
+{z:0,t:"fill",u:"@sunny_sam",x:"The sand is __ (hot) than my coffee ☕🔥",a:["hotter"],why:"Consoante-vogal-consoante: dobre a última letra. hot → hotter."},
+{z:0,t:"build",pt:"Pizza é a melhor comida da praia.",w:["Pizza","is","the","best","food","on","the","beach","more","goodest"],a:"Pizza is the best food on the beach",why:"“Good” é irregular: good → better → best. “Goodest” não existe, nem na Flórida!"},
+{z:0,t:"mc",ctx:"🍦 Small $2  |  Medium $4  |  Giant $6",p:"Jax quer saber qual sorvete é o mais caro.",o:["The giant ice cream is the expensivest.","The giant ice cream is the most expensive.","The giant ice cream is more expensive."],a:1,why:"“Expensive” é longo: the most expensive. Entre três ou mais usamos superlativo (the most)."},
+{z:1,t:"fill",u:"@gator_greg",x:"My tail is __ (long) than your tail 🐊",a:["longer"],why:"“Long” é curto: long + er = longer."},
+{z:1,t:"build",pt:"Um jacaré é mais perigoso que um pato.",w:["A","gator","is","more","dangerous","than","a","duck","most","dangerouser"],a:"A gator is more dangerous than a duck",why:"“Dangerous” é longo: more + adjetivo + than. Nunca “dangerouser”."},
+{z:1,t:"fill",u:"@florida_man_420",x:"Swamp tacos are __ (good) than city tacos 🌮",a:["better"],why:"“Good” é irregular: good → better → best."},
+{z:2,t:"mc",ctx:"🛹 Skateboard: $50  |  🛴 Rocket scooter: $500",p:"Qual veículo de fuga custa mais?",o:["The rocket scooter is more expensive than the skateboard.","The rocket scooter is expensiver than the skateboard.","The rocket scooter is the most expensive than the skateboard."],a:0,why:"Comparando dois, usamos o comparativo: more expensive + than. “Expensiver” não existe!"},
+{z:2,t:"build",pt:"Jax é o cara mais engraçado da gangue.",w:["Jax","is","the","funniest","guy","in","the","gang","more","funny"],a:"Jax is the funniest guy in the gang",why:"“Funny” termina em y: troque por i e some -est. funny → the funniest."},
+{z:2,t:"fill",u:"@vice_city_news",x:"That was the __ (bad) pizza ever! 🍕🤢",a:["worst"],why:"“Bad” é irregular: bad → worse → worst. Superlativo leva “the”: the worst."}
+);
+document.addEventListener("keydown",e=>{
+ if(e.ctrlKey||e.metaKey||e.altKey)return;const t=e.target.tagName;if(t==="INPUT"||t==="BUTTON")return;
+ if(S.screen!=="game"){if(e.key==="Enter")startGame();return}
+ if(e.key==="Enter"){e.preventDefault();S.answered?next():check();return}
+ if(!S.answered&&Q[S.i].t==="mc"&&/^[1-3]$/.test(e.key))selOpt(+e.key-1);
+});
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const norm=s=>s.toLowerCase().trim().replace(/\s+/g," ");
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const $=s=>document.querySelector(s);
+let S;
+
+/* ---------- JAX ---------- */
+function jax(m){
+ const mouth={idle:'<path d="M38 70q12 8 24 0" stroke="#7a2a14" stroke-width="3" fill="none" stroke-linecap="round"/>',
+  happy:'<path d="M36 65q14 18 28 0z" fill="#7a2a14"/><path d="M40 66h20v4q-10 5-20 0z" fill="#fff"/>',
+  sad:'<path d="M38 74q12-10 24 0" stroke="#7a2a14" stroke-width="3" fill="none" stroke-linecap="round"/>',
+  shock:'<ellipse cx="50" cy="71" rx="7" ry="8" fill="#7a2a14"/>'}[m];
+ return `<svg class="jax" viewBox="0 0 100 110" role="img" aria-label="Jax">
+ <defs><linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#FF2A85"/><stop offset="1" stop-color="#FF8E3C"/></linearGradient></defs>
+ <path d="M14 110q4-22 36-22t36 22z" fill="#00F0FF"/><path d="M38 90l12 14 12-14" fill="#0F0E17" opacity=".35"/>
+ <circle cx="50" cy="98" r="3" fill="#FFD23C"/><path d="M34 90q16 16 32 0" stroke="#FFD23C" stroke-width="2.5" fill="none"/>
+ <circle cx="50" cy="56" r="30" fill="#FFC58A"/>
+ <path d="M18 46Q12 8 52 10Q92 8 82 46Q66 24 50 30Q34 24 18 46Z" fill="#FF2A85"/>
+ <rect x="24" y="44" width="23" height="15" rx="6" fill="url(#gl)"/><rect x="53" y="44" width="23" height="15" rx="6" fill="url(#gl)"/>
+ <path d="M47 50h6" stroke="#FFD23C" stroke-width="3"/><path d="M28 48l7-1" stroke="#fff" stroke-width="2" opacity=".8"/><path d="M57 48l7-1" stroke="#fff" stroke-width="2" opacity=".8"/>
+ ${mouth}</svg>`;
+}
+
+/* ---------- ESTADO ---------- */
+function init(){S={screen:"start",i:0,f:0,stars:0,streak:0,best:0,hits:0,bust:false,say:rnd(SAY.start),mood:"happy"};resetQ()}
+function resetQ(){const q=Q[S.i];S.answered=false;S.ok=false;S.sel=null;S.val="";S.placed=[];S.order=[];
+ if(q.t==="build"){S.order=q.w.map((_,k)=>k);for(let k=S.order.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[S.order[k],S.order[j]]=[S.order[j],S.order[k]]}}}
+function startGame(){init();S.screen="game";S.say=SAY.zone[0];S.mood="idle";render()}
+const mult=()=>S.streak>=6?3:S.streak>=3?2:1;
+
+/* ---------- AÇÕES ---------- */
+function selOpt(k){if(S.answered)return;S.sel=k;render()}
+function pick(k){if(S.answered||S.placed.includes(k))return;S.placed.push(k);render()}
+function unpick(p){if(S.answered)return;S.placed.splice(p,1);render()}
+function check(){
+ if(S.answered)return;const q=Q[S.i];let ok;
+ if(q.t==="mc"){if(S.sel===null)return;ok=S.sel===q.a}
+ else if(q.t==="fill"){const v=norm(S.val||"");if(!v)return;ok=q.a.includes(v)}
+ else{if(!S.placed.length)return;ok=S.placed.map(k=>q.w[k]).join(" ")===q.a}
+ S.answered=true;S.ok=ok;
+ if(ok){S.streak++;S.best=Math.max(S.best,S.streak);S.hits++;S.f+=150*mult();S.mood="happy";S.say=S.streak>=3?rnd(SAY.streak):rnd(SAY.hit)}
+ else{S.streak=0;S.stars++;S.mood=S.stars>=4?"shock":"sad";S.say=rnd(SAY.miss);if(S.stars>=5)S.bust=true}
+ render();
+ const ph=$("#phone");ph.classList.remove("shake","flashG","flashR");void ph.offsetWidth;
+ ph.classList.add(ok?"flashG":"flashR");if(!ok)ph.classList.add("shake");
+}
+function next(){
+ if(!S.answered)return;
+ if(S.bust){S.screen="busted";S.mood="shock";S.say="BUSTED! Os policiais te pegaram, mano…"}
+ else if(S.i>=Q.length-1){S.screen="win";S.mood="happy";S.say="LENDA DE LEONIDA! Você dominou os comparativos!"}
+ else{const old=Q[S.i].z;S.i++;resetQ();S.mood="idle";S.say=Q[S.i].z!==old?SAY.zone[Q[S.i].z]:"Próxima missão! Atenção ao adjetivo."}
+ render();
+}
+
+/* ---------- VIEWS ---------- */
+function vStart(){return `<div class="center"><div class="sun"></div>
+ <h1 class="logo disp grad">VICE<br>LINGO</h1>
+ <p class="tag">Comparativos e superlativos em inglês, estilo Vice City.</p>
+ ${jax("happy").replace('class="jax"','class="jax" style="width:130px"')}
+ <div class="bubble" style="max-width:300px">${S.say}</div>
+ <div class="map"><div><span>🌴</span>Vice Beach</div><div><span>🐊</span>Grassrivers</div><div><span>💎</span>Downtown Hustle</div></div>
+ <button class="btn" style="margin-top:auto" onclick="startGame()">START HUSTLE</button></div>`}
+
+function vGame(){
+ const q=Q[S.i],z=ZN[q.z],pct=((S.i+(S.answered?1:0))/Q.length)*100;
+ let body="",title="";
+ if(q.t==="mc"){title="Escolha a frase correta";
+  body=`<div class="card ctx">${q.ctx}</div><p style="margin:0 0 12px">${q.p}</p>`+q.o.map((o,k)=>{
+   let c="opt";if(S.answered){if(k===q.a)c+=" ok";else if(k===S.sel)c+=" bad"}else if(k===S.sel)c+=" sel";
+   return `<button class="${c}" ${S.answered?"disabled":""} onclick="selOpt(${k})">${o}</button>`}).join("")}
+ else if(q.t==="fill"){title="Complete a legenda viral";
+  const cls=S.answered?(S.ok?"ok":"bad"):"";
+  const inp=`<input id="fi" class="${cls}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="resposta" value="${esc(S.val)}" ${S.answered?"disabled":""} oninput="S.val=this.value;$('#chk').disabled=!this.value.trim()" onkeydown="if(event.key==='Enter')check()">`;
+  body=`<div class="card post"><div class="who"><span class="av"></span>${q.u} <span style="color:var(--mute);font-weight:600">· agora</span></div><p>${q.x.replace("__",inp)}</p></div>`}
+ else{title="Monte a frase";
+  const cls=S.answered?(S.ok?"ok":"bad"):"";
+  body=`<p class="pt">🇧🇷 ${q.pt}</p><div class="slots ${cls}">${S.placed.map((k,p)=>`<button class="tok" ${S.answered?"disabled":""} onclick="unpick(${p})">${q.w[k]}</button>`).join("")}</div>
+  <div class="bank">${S.order.map(k=>S.placed.includes(k)?`<button class="tok ghost" disabled>${q.w[k]}</button>`:`<button class="tok" ${S.answered?"disabled":""} onclick="pick(${k})">${q.w[k]}</button>`).join("")}</div>`}
+ let bar;
+ if(!S.answered){
+  const can=q.t==="mc"?S.sel!==null:q.t==="fill"?!!S.val.trim():S.placed.length>0;
+  bar=`<div class="bar"><button id="chk" class="btn cy" ${can?"":"disabled"} onclick="check()">CHECK</button><span class="hint">Teclado: 1, 2, 3 escolhe a opção · Enter confirma</span></div>`}
+ else{
+  const right=q.t==="mc"?q.o[q.a]:q.t==="fill"?q.a[0]:q.a;
+  const m=mult();
+  bar=`<div class="bar ${S.ok?"ok":"bad"}"><div class="fb"><h4>${S.ok?"NICE! +"+150*m+" FOLLOWERS"+(m>1?" (x"+m+")":""):"WANTED +1 ★"}</h4>
+  ${S.ok?"":`<div>Resposta certa: <b>${right}</b></div>`}<div>${q.why}</div></div>
+  <button class="btn" onclick="next()">${S.bust?"CONTINUE":S.i>=Q.length-1?"FINISH":"CONTINUE"}</button></div>`}
+ return `<div class="top"><div class="prog"><i style="width:${pct}%"></i></div>
+ <div class="hud"><div class="stars" aria-label="${S.stars} de 5 estrelas">${[0,1,2,3,4].map(k=>`<b class="${k<S.stars?"on":""}">★</b>`).join("")}</div>
+ <div class="zone" style="color:${z.c}">${z.e} ${z.n} · ${S.i+1}/${Q.length}</div><div class="fol">👥 ${S.f.toLocaleString("en-US")}</div></div>
+ ${S.streak>=3?`<div class="viral">🔥 VIRAL STREAK x${mult()}</div>`:""}</div>
+ <div class="stage"><div class="jaxrow">${jax(S.mood)}<div class="bubble">${S.say}</div></div>
+ <div class="qtype">${title}</div>${body}</div>${bar}`}
+
+function vBusted(){return `<div class="siren"></div><div class="center">
+ <h1 class="big disp" style="color:var(--bad);text-shadow:0 0 22px var(--bad)">BUSTED!</h1>
+ ${jax("shock").replace('class="jax"','class="jax" style="width:120px"')}
+ <div class="bubble">${S.say}</div>
+ <div class="stars" style="font-size:34px">${"★★★★★".split("").map(()=>`<b class="on">★</b>`).join("")}</div>
+ <p class="tag">5 estrelas de procurado. Você somou ${S.f.toLocaleString("en-US")} followers antes de ser preso. Reinicie a fase e tente de novo!</p>
+ <button class="btn" style="margin-top:auto" onclick="startGame()">TRY AGAIN</button></div>`}
+
+function vWin(){const av=5-S.stars;return `<div class="center"><div class="sun"></div>
+ <h1 class="big disp grad">YOU’RE VIRAL!</h1>
+ ${jax("happy").replace('class="jax"','class="jax" style="width:110px"')}
+ <div class="bubble">${S.say}</div>
+ <div class="stats"><div><b style="color:var(--cyan)">${S.f.toLocaleString("en-US")}</b><small>followers</small></div><div><b style="color:var(--ok)">${av}/5</b><small>estrelas evitadas</small></div><div><b style="color:var(--orange)">${S.best}</b><small>maior streak</small></div></div>
+ <div class="rules"><p><b>Curtos:</b> <em>-er / -est</em>. fast → faster → the fastest. Dobre a consoante em big → bigger e troque y por i em crazy → crazier.</p>
+ <p><b>Longos (2+ sílabas):</b> <em>more / the most</em>. more dangerous → the most dangerous.</p>
+ <p><b>Irregulares:</b> good → <em>better → the best</em>; bad → <em>worse → the worst</em>.</p>
+ <p><b>Dica:</b> comparativo usa <em>than</em>; superlativo usa <em>the</em> (the cheapest car in town).</p></div>
+ <button class="btn" onclick="startGame()">PLAY AGAIN</button></div>`}
+
+function render(){
+ $("#app").innerHTML=S.screen==="start"?vStart():S.screen==="game"?vGame():S.screen==="busted"?vBusted():vWin();
+ if(S.screen==="game"&&Q[S.i].t==="fill"&&!S.answered){const f=$("#fi");if(f)f.focus({preventScroll:true})}
+ const sc=$(".stage,.center");if(sc&&!S.answered)sc.scrollTop=0;
+}
+init();render();
+</script>
+</body>
+</html>
